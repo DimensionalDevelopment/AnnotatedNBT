@@ -33,7 +33,6 @@ public class NBTSerializableProcessor extends AbstractProcessor {
     private static final String VEC_3I = "net.minecraft.util.math.Vec3i";
     private static final String LOCATION = "org.dimdev.ddutils.Location";
     private static final String RGBA = "org.dimdev.ddutils.RGBA";
-    private static final String VIRTUAL_LOCATION = "org.dimdev.dimdoors.shared.VirtualLocation";
     private static final String UUID = "java.util.UUID";
 
     private Map<String, Integer> varCounter = new HashMap<>();
@@ -311,13 +310,6 @@ public class NBTSerializableProcessor extends AbstractProcessor {
                             w.println(nbt + ".setFloat(\"green\", " + from + ".getGreen());");
                             w.println(nbt + ".setFloat(\"blue\", " + from + ".getBlue());");
                             w.println(nbt + ".setFloat(\"alpha\", " + from + ".getAlpha());");
-                        } else if (types.isAssignable(type, elements.getTypeElement(VIRTUAL_LOCATION).asType())) {
-                            w.println("NBTTagCompound " + nbt + " = new NBTTagCompound();");
-                            w.println(nbt + ".setInteger(\"dim\", " + from + ".getDim());");
-                            w.println(nbt + ".setInteger(\"x\", " + from + ".getX());");
-                            w.println(nbt + ".setInteger(\"y\", " + from + ".getY());");
-                            w.println(nbt + ".setInteger(\"z\", " + from + ".getZ());");
-                            w.println(nbt + ".setInteger(\"depth\", " + from + ".getDepth());");
                         } else if (((DeclaredType) type).asElement().getKind() == ElementKind.ENUM) {
                             w.println("NBTTagInt " + nbt + " = new NBTTagInt(" + from + ".ordinal());");
                         } else {
@@ -580,13 +572,6 @@ public class NBTSerializableProcessor extends AbstractProcessor {
                                       + "((NBTTagCompound) "+ nbt + ").getFloat(\"green\"), "
                                       + "((NBTTagCompound) "+ nbt + ").getFloat(\"blue\"), "
                                       + "((NBTTagCompound) "+ nbt + ").getFloat(\"alpha\")" + ");");
-                        } else if (types.isAssignable(type, elements.getTypeElement(VIRTUAL_LOCATION).asType())) {
-                            w.println(type + " " + to + " = new " + type + "("
-                                    + "((NBTTagCompound) "+ nbt + ").getInteger(\"dim\"), "
-                                    + "((NBTTagCompound) "+ nbt + ").getInteger(\"x\"), "
-                                    + "((NBTTagCompound) "+ nbt + ").getInteger(\"y\"), "
-                                    + "((NBTTagCompound) "+ nbt + ").getInteger(\"z\"), "
-                                    + "((NBTTagCompound) "+ nbt + ").getInteger(\"depth\")" + ");");
                         } else if (((DeclaredType) type).asElement().getKind() == ElementKind.ENUM) {
                             w.println(type + " " + to + " = " + type + ".values()[((NBTTagInt) " + nbt + ").getInt()" + "];");
                         } else {
